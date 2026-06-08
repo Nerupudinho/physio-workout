@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mobility Workout</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f0f1a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <header>
+      <h1>Mobility</h1>
+      <button id="btn-history" class="icon-btn" aria-label="History">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+      </button>
+    </header>
+    <div id="exercise-list" class="exercise-list"></div>
+    <div class="bottom-action">
+      <button id="btn-start-all" class="btn-primary">Start Full Routine</button>
+    </div>
+  </div>
+
+  <!-- DETAIL -->
+  <div id="screen-detail" class="screen">
+    <header>
+      <button id="btn-back-detail" class="icon-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <h2 id="detail-name"></h2>
+    </header>
+    <div class="video-placeholder" id="detail-video">
+      <div class="video-inner">
+        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+          <path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9A2.25 2.25 0 0 0 4.5 18.75Z"/>
+        </svg>
+        <span>Video placeholder</span>
+      </div>
+    </div>
+    <p id="detail-description" class="detail-desc"></p>
+
+    <div class="detail-settings">
+      <div class="settings-row">
+        <span class="settings-label">Reps</span>
+        <div class="stepper">
+          <button class="step-btn" id="reps-minus">−</button>
+          <span id="reps-val" class="step-val">10</span>
+          <button class="step-btn" id="reps-plus">+</button>
+        </div>
+      </div>
+      <div class="settings-row">
+        <span class="settings-label">Hold (seconds)</span>
+        <div class="stepper">
+          <button class="step-btn" id="hold-minus">−</button>
+          <span id="hold-val" class="step-val">5</span>
+          <button class="step-btn" id="hold-plus">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-action">
+      <button id="btn-start-exercise" class="btn-primary">Start Exercise</button>
+    </div>
+  </div>
+
+  <!-- WORKOUT -->
+  <div id="screen-workout" class="screen">
+    <div class="workout-topbar">
+      <button id="btn-stop-workout" class="icon-btn" aria-label="Stop">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 18 18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      <span id="workout-progress" class="workout-progress-text"></span>
+    </div>
+
+    <div class="workout-body">
+      <h2 id="workout-name"></h2>
+      <div id="workout-side" class="side-badge hidden"></div>
+      <div id="workout-set" class="set-badge hidden"></div>
+
+      <!-- REP MODE -->
+      <div id="ui-reps" class="ui-mode">
+        <div class="rep-row">
+          <span id="rep-current" class="rep-big">0</span>
+          <span class="rep-slash">/</span>
+          <span id="rep-total" class="rep-total">10</span>
+        </div>
+        <div id="hold-overlay" class="hold-overlay hidden">
+          <div class="hold-ring-wrap">
+            <svg class="hold-ring-svg" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="34" class="hold-ring-bg"/>
+              <circle cx="40" cy="40" r="34" class="hold-ring-arc" id="hold-ring-arc"/>
+            </svg>
+            <span id="hold-count" class="hold-count-num"></span>
+          </div>
+          <span class="hold-label">HOLD</span>
+        </div>
+      </div>
+
+      <!-- TIMER MODE -->
+      <div id="ui-timer" class="ui-mode hidden">
+        <div class="timer-wrap">
+          <svg class="timer-svg" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" class="timer-ring-bg"/>
+            <circle cx="60" cy="60" r="52" class="timer-ring-arc" id="timer-ring-arc"/>
+          </svg>
+          <div class="timer-center">
+            <span id="timer-count" class="timer-big">30</span>
+            <span class="timer-unit">sec</span>
+          </div>
+        </div>
+      </div>
+
+      <p id="workout-instruction" class="workout-instruction"></p>
+    </div>
+
+    <div class="workout-footer">
+      <button id="btn-pause" class="btn-primary flex1">Pause</button>
+      <button id="btn-skip" class="btn-secondary">Skip</button>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div id="screen-complete" class="screen">
+    <div class="complete-wrap">
+      <div class="complete-check">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M4.5 12.75l6 6 9-13.5"/>
+        </svg>
+      </div>
+      <h2>Done!</h2>
+      <p id="complete-summary"></p>
+      <button id="btn-home" class="btn-primary" style="margin-top:24px">Back to Home</button>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="screen-history" class="screen">
+    <header>
+      <button id="btn-back-history" class="icon-btn" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <h2>History</h2>
+    </header>
+    <div id="history-list" class="history-list"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
